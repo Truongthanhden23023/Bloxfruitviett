@@ -1,0 +1,68 @@
+import pygame
+import random
+
+# Initialize Pygame
+pygame.init()
+
+# Define colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
+# Set up the game window
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Blox Fruit")
+
+# Load images
+player_image = pygame.image.load('player.png')
+fruit_image = pygame.image.load('fruit.png')
+
+# Get image dimensions
+player_width, player_height = player_image.get_size()
+fruit_width, fruit_height = fruit_image.get_size()
+
+# Initialize player position and speed
+player_x = (SCREEN_WIDTH - player_width) // 2
+player_y = SCREEN_HEIGHT - player_height
+player_speed = 5
+
+# Initialize fruit position and speed
+fruit_x = random.randint(0, SCREEN_WIDTH - fruit_width)
+fruit_y = 0
+fruit_speed = 3
+
+# Main game loop
+clock = pygame.time.Clock()
+running = True
+while running:
+    screen.fill(BLACK)
+    
+    # Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+            
+    # Move the player
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player_x > 0:
+        player_x -= player_speed
+    if keys[pygame.K_RIGHT] and player_x < SCREEN_WIDTH - player_width:
+        player_x += player_speed
+        
+    # Move the fruit
+    fruit_y += fruit_speed
+    if fruit_y > SCREEN_HEIGHT:
+        fruit_x = random.randint(0, SCREEN_WIDTH - fruit_width)
+        fruit_y = 0
+        
+    # Draw the player and fruit
+    screen.blit(player_image, (player_x, player_y))
+    screen.blit(fruit_image, (fruit_x, fruit_y))
+    
+    # Update the display
+    pygame.display.flip()
+    clock.tick(60)
+
+# End the game
+      pygame.quit()
